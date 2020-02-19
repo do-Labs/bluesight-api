@@ -28,8 +28,7 @@ async function getData() {
     await request(options, function (error, response, body) {
         if (error) throw new Error(error);
         else {
-            // console.log(body);
-            writeFile(body);
+            writeFile(body).catch();
         }
     });
 
