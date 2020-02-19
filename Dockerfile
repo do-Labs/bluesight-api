@@ -1,7 +1,19 @@
 # Services Dockerfile
-FROM tiangolo/node-frontend:10 as build-stage
+FROM alpine:3.9
+
+ARG GOOGLE_APPLICATION_CREDENTIALS
+ENV GOOGLE_APPLICATION_CREDENTIALS ${GOOGLE_APPLICATION_CREDENTIALS}
+
+ARG GEOCODER_APIKEY
+ENV GEOCODER_APIKEY ${GEOCODER_APIKEY}
+
+RUN apk add --update nodejs nodejs-npm
 WORKDIR /api
 COPY ./ /api/
+RUN node --version
+RUN echo GOOGLE_APPLICATION_CREDENTIALS:  $GOOGLE_APPLICATION_CREDENTIALS
+RUN echo GEOCODER_APIKEY:  $GEOCODER_APIKEY
 RUN npm install
-
-RUN node api 8000
+EXPOSE 8080
+#RUN node services/api-service
+CMD ["node", "services/api-service.js"]
